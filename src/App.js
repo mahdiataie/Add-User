@@ -1,11 +1,8 @@
-//import logo from './logo.svg';
+
 import "./App.css";
-//import Button from "@mui/material/Button";
 import styled from "styled-components";
 import React, { useState } from "react";
 import EnteredData from "./Components/User/EnteredData";
-//import DataEntry from "./Components/User/DataEntry";
-import { Card } from "@mui/material";
 import EntryForm from "./Components/User/EntryForm";
 
 const Wrapper = styled.div`

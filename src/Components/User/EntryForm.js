@@ -32,7 +32,6 @@ const EntryForm = (props) => {
     }
     setNameEntered(event.target.value);
   };
-  //&& event.target.value > 0
   const ageHandler = (event) => {
     if (event.target.value.trim().length > 0) {
       setIsValid(true);
