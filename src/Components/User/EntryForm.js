@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card, TextField, Button } from "@mui/material";
 import styled from "styled-components";
-
+import ErrorModal from "../UI Material/ErrorModal";
 const StyledButton = styled(Button)``;
 const Wrapper = styled(Card)`
   display: flex;
@@ -22,19 +22,42 @@ const Wrapper = styled(Card)`
 const EntryForm = (props) => {
   const [nameEntered, setNameEntered] = useState("");
   const [ageEntered, setAgeEntered] = useState("");
-
-
+  const [isValid, setIsValid] = useState(true);
+  const [isError, setIsError] = useState();
   const nameHandler = (event) => {
+    if (event.target.value.trim().length > 0) {
+      setIsValid(true);
+    }
     setNameEntered(event.target.value);
   };
-
+  //&& event.target.value > 0
   const ageHandler = (event) => {
+    if (event.target.value.trim().length > 0) {
+      setIsValid(true);
+    }
     setAgeEntered(event.target.value);
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
     console.log(ageEntered);
+    if (nameEntered.trim().length === 0 || ageEntered.trim().length === 0) {
+      setIsValid(false);
+      setIsError({
+        title: "Invalid Input!",
+        message: "Please enter a valid name or age",
+      });
+      return;
+    }
+    if (+ageEntered < 1) {
+      setIsValid(false);
+      setIsError({
+        title: "Invalid Age!",
+        message: "Please enter a valid age",
+      });
+
+      return;
+    }
 
     const entryData = {
       name: nameEntered,
@@ -46,37 +69,50 @@ const EntryForm = (props) => {
     setNameEntered("");
   };
 
-  return (
-    <form onSubmit={submitHandler}>
-      <Wrapper variant="outlined">
-        <TextField
-          fullWidth
-          id="outlined-basic"
-          label="Name"
-          variant="outlined"
-          value={nameEntered}
-          onChange={nameHandler}
-        />
+    const errorHandler = () =>{
+        setIsError(null);
+    };
 
-        <TextField
-          id="outlined-basic"
-          label="Age"
-          variant="outlined"
-          value={ageEntered}
-          onChange={ageHandler}
-        />
-        <div>
-          <StyledButton
-            type="submit"
-            variant="contained"
-            disableElevation
-            //onChange={entryHandler}
-          >
-            Submit
-          </StyledButton>
-        </div>
-      </Wrapper>
-    </form>
+  return (
+    <div>
+      {isError && <ErrorModal
+        title={isError.title}
+        massage={isError.message}
+        onConfirm={errorHandler}
+      />}
+      <form onSubmit={submitHandler}>
+        <Wrapper variant="outlined">
+          <TextField
+            error={!isValid}
+            fullWidth
+            id="outlined-basic"
+            label="Name"
+            variant="outlined"
+            value={nameEntered}
+            onChange={nameHandler}
+          />
+
+          <TextField
+            error={!isValid}
+            id="outlined-basic"
+            label="Age"
+            variant="outlined"
+            value={ageEntered}
+            onChange={ageHandler}
+          />
+          <div>
+            <StyledButton
+              type="submit"
+              variant="contained"
+              disableElevation
+              //onChange={entryHandler}
+            >
+              Submit
+            </StyledButton>
+          </div>
+        </Wrapper>
+      </form>
+    </div>
   );
 };
 export default EntryForm;
