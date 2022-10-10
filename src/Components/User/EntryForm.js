@@ -23,7 +23,9 @@ const EntryForm = (props) => {
   const [nameEntered, setNameEntered] = useState("");
   const [ageEntered, setAgeEntered] = useState("");
   const [isValid, setIsValid] = useState(true);
+  const [ageisValid, setAgeIsValid] = useState(true);
   const [isError, setIsError] = useState();
+
   const nameHandler = (event) => {
     if (event.target.value.trim().length > 0) {
       setIsValid(true);
@@ -43,6 +45,7 @@ const EntryForm = (props) => {
     console.log(ageEntered);
     if (nameEntered.trim().length === 0 || ageEntered.trim().length === 0) {
       setIsValid(false);
+      setAgeIsValid(false);
       setIsError({
         title: "Invalid Input!",
         message: "Please enter a valid name or age",
@@ -50,7 +53,7 @@ const EntryForm = (props) => {
       return;
     }
     if (+ageEntered < 1) {
-      setIsValid(false);
+      setAgeIsValid(false);
       setIsError({
         title: "Invalid Age!",
         message: "Please enter a valid age",
@@ -93,7 +96,7 @@ const EntryForm = (props) => {
           />
 
           <TextField
-            error={!isValid}
+            error={!ageisValid}
             id="outlined-basic"
             label="Age"
             variant="outlined"
@@ -105,7 +108,6 @@ const EntryForm = (props) => {
               type="submit"
               variant="contained"
               disableElevation
-              //onChange={entryHandler}
             >
               Submit
             </StyledButton>
