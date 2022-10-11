@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Card, TextField, Button } from "@mui/material";
 import styled from "styled-components";
 import ErrorModal from "../UI Material/ErrorModal";
@@ -20,6 +20,8 @@ const Wrapper = styled(Card)`
 `;
 
 const EntryForm = (props) => {
+  const nameInputRef = useRef(); // only to see how refs work
+  const ageInputRef = useRef();   // only to see how refs work
   const [nameEntered, setNameEntered] = useState("");
   const [ageEntered, setAgeEntered] = useState("");
   const [isValid, setIsValid] = useState(true);
@@ -92,6 +94,7 @@ const EntryForm = (props) => {
             variant="outlined"
             value={nameEntered}
             onChange={nameHandler}
+            ref={nameInputRef}
           />
 
           <TextField
@@ -101,6 +104,7 @@ const EntryForm = (props) => {
             variant="outlined"
             value={ageEntered}
             onChange={ageHandler}
+            ref={ageInputRef}
           />
           <div>
             <StyledButton

@@ -1,8 +1,8 @@
-import { useSlotProps } from "@mui/base";
+//import { useSlotProps } from "@mui/base";
 import { Card, Button } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
-
+import ReactDOM from "react-dom";
 const Wrapper = styled(Card)`
   width: 450px;
 
@@ -15,7 +15,7 @@ const Wrapper = styled(Card)`
   box-shadow: 50px;
 `;
 
-const Backdrop = styled.div`
+const Backd = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -26,21 +26,42 @@ const Backdrop = styled.div`
 `;
 
 const StyledButton = styled(Button)``;
+
+const Backdrop = (props) => {
+  return <Backd onClick={props.onConfirm}></Backd>;
+};
+const ModalOverlay = (props) => {
+  return (
+    <Wrapper>
+      <header>
+        <h2>{props.title}</h2>
+      </header>
+      <div>
+        <p>{props.massage}</p>
+      </div>
+      <footer>
+        <StyledButton onClick={props.onConfirm}> Okay </StyledButton>
+      </footer>
+    </Wrapper>
+  );
+};
+
 const ErrorModal = (props) => {
   return (
-    <Backdrop onClick={props.onConfirm}>
-      <Wrapper>
-        <header>
-          <h2>{props.title}</h2>
-        </header>
-        <div>
-          <p>{props.massage}</p>
-        </div>
-        <footer>
-          <StyledButton onClick={props.onConfirm}> Okay </StyledButton>
-        </footer>
-      </Wrapper>
-    </Backdrop>
+    <React.Fragment>
+      {ReactDOM.createPortal(
+        <Backdrop onConfirm={props.onConfirm} />,
+        document.getElementById("backdrop-root")
+      )}
+      {ReactDOM.createPortal(
+        <ModalOverlay
+          title={props.title}
+          massage={props.massage}
+          onConfirm={props.onConfirm}
+        />,
+        document.getElementById("overlay-root")
+      )}
+    </React.Fragment>
   );
 };
 
